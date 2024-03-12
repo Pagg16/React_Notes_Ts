@@ -1,15 +1,15 @@
 import { useState, ChangeEvent } from "react";
 import style from "./noteForm.module.css";
 import Select, { SelectOptions } from "../Select/Select";
+import { useNavigate } from "react-router-dom";
 
 const BASE_OPTIONS: SelectOptions[] = [
-  { lable: "First", value: 1 },
-  { lable: "Secong", value: 2 },
-  { lable: "Third", value: 3 },
-  { lable: "Fourth", value: 4 },
-  { lable: "Fifth", value: 5 },
-  { lable: "Sixth", value: 6 },
-  { lable: "Seventh", value: 7 },
+  { lable: "JS", value: 1 },
+  { lable: "Redux", value: 2 },
+  { lable: "React", value: 3 },
+  { lable: "typeScript", value: 4 },
+  { lable: "CSS", value: 5 },
+  { lable: "HTML", value: 6 },
 ];
 
 const NoteForm = () => {
@@ -18,9 +18,15 @@ const NoteForm = () => {
   const [selectInput, setSelectInput] = useState<string>("");
   const [bodyInput, setBodyInput] = useState<string>("");
 
+  const history = useNavigate();
+
   function handleBodyChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setBodyInput(e.target.value);
   }
+
+  console.log(multipleValue);
+
+  // function createNote() {}
 
   return (
     <div className={style.noteForm}>
@@ -58,7 +64,9 @@ const NoteForm = () => {
       </div>
       <div className={style.buttonControlBlock}>
         <button className={style.saveBtn}>Save</button>
-        <button className={style.canselBtn}>Cancel</button>
+        <button onClick={() => history(-1)} className={style.canselBtn}>
+          Cancel
+        </button>
       </div>
     </div>
   );

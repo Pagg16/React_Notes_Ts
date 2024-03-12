@@ -67,13 +67,36 @@
 }
 
 .buttonControlBlock {
-
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
 }
 
-.saveBtn {
-
+.saveBtn,
+.canselBtn {
+  background-color: blue;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 10px;
+  margin: 0;
+  border-radius: 0.5em;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .canselBtn {
-  
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border: 1px solid gray;
+  margin-left: 10px;
+}
+
+.saveBtn:hover,
+.canselBtn:hover {
+  transform: scale(0.9);
 }

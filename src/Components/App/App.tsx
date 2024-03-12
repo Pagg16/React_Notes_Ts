@@ -1,26 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import style from "./app.module.css";
+// import style from "./app.module.css";
 import NewNote from "../NewNote/NewNote";
-import { useState } from "react";
-
-const options = [
-  { lable: "First", value: 1 },
-  { lable: "Secong", value: 2 },
-  { lable: "Third", value: 3 },
-  { lable: "Fourth", value: 4 },
-  { lable: "Fifth", value: 5 },
-  { lable: "Sixth", value: 6 },
-  { lable: "Seventh", value: 7 },
-];
+import { useEffect } from "react";
 
 function App() {
-  const [multipleValue, setMultipleValue] = useState<SelectOptions[]>([
-    options[0],
-  ]);
-
-  const [singleValue, setSingleValue] = useState<SelectOptions | undefined>(
-    options[0]
-  );
+  
+  useEffect(() => {
+    if (!localStorage.getItem("TAGS")) {
+      localStorage.setItem("TAGS", "[]");
+    }
+  }, []);
 
   return (
     <Routes>
