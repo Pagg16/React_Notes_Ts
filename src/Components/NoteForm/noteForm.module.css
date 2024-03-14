@@ -100,3 +100,10 @@
 .canselBtn:hover {
   transform: scale(0.9);
 }
+
+.buttonLink:active,
+.buttonLink:hover,
+.buttonLink {
+  text-decoration: none;
+  color: #666;
+}

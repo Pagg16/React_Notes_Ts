@@ -9,7 +9,7 @@ import styles from "./select.module.css";
 
 export type SelectOptions = {
   lable: string;
-  value: string | number;
+  value: string;
 };
 
 type MultipleSelectProps = {
