@@ -4,6 +4,7 @@ import NewNote from "../NewNote/NewNote";
 import { useMemo } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { v4 as uuidv4 } from "uuid";
+import NoteList from "../NoteList/NoteList";
 
 export type Note = {
   id: string;
@@ -30,35 +31,55 @@ export type RawNoteData = {
   tagsIds: string[];
 };
 
+export type NoteWithTags = Omit<Note, "tags"> & { tags: Tag[] };
+
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
-  const [tags, setTegs] = useLocalStorage<Tag[]>("TAGS", []);
+  const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
 
-  const notesWithTags = useMemo(() => {
+  const notesWithTags: NoteWithTags[] = useMemo(() => {
     return notes.map((note) => {
-      return {
-        ...NodeIterator,
-        tags: tags.filter((tag) => note.tagsIds.includes(tag.value)),
-      };
+      const filteredTags = tags.filter((tag) =>
+        note.tagsIds.includes(tag.value)
+      );
+      return { ...note, tags: filteredTags };
     });
   }, [notes, tags]);
 
   function onCteateNote({ tags, ...data }: NoteData) {
     setNotes((prevNotes) => {
-      return [...ptevNotes, { ...data, id: v4() }];
+      return [
+        ...prevNotes,
+        { ...data, id: uuidv4(), tagsIds: tags.map((tag) => tag.value) },
+      ];
     });
   }
 
   return (
     <Routes>
-      <Route path="/" element={""} />
+      <Route
+        path="/"
+        element={
+          <NoteList
+            onSubmit={onCteateNote}
+            setTags={setTags}
+            tags={tags}
+            notesWithTags={notesWithTags}
+          />
+        }
+      />
       <Route element={""} />
-      <Route path="/new" element={<NewNote />} />
+      <Route
+        path="/new"
+        element={
+          <NewNote onSubmit={onCteateNote} setTags={setTags} tags={tags} />
+        }
+      />
       <Route path="/id:">
         <Route index element={""} />
         <Route path="edit" element={""} />
       </Route>
-      <Route path="*" element={<NewNote />} />
+      <Route path="*" element={""} />
     </Routes>
   );
 }

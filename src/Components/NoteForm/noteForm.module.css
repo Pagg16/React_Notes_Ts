@@ -45,6 +45,14 @@
   height: 100%;
 }
 
+.bodyBlockNoteList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
 .bodyLable {
   font-size: 16px;
   margin-right: auto;

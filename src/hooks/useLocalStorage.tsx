@@ -6,6 +6,7 @@ export function useLocalStorage<T>(
 ): [T, typeof setValue] {
   const [value, setValue] = useState<T>(() => {
     const jsonValue = localStorage.getItem(key);
+
     if (jsonValue === null) {
       if (typeof initialValue === "function") {
         return (initialValue as () => T)();

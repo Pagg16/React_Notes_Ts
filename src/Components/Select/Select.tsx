@@ -6,6 +6,7 @@ import {
   ChangeEvent,
 } from "react";
 import styles from "./select.module.css";
+import { v4 as uuidv4 } from "uuid";
 
 export type SelectOptions = {
   lable: string;
@@ -25,16 +26,12 @@ type SingleSelectProps = {
 };
 
 type SelectionProps = {
-  BASE_OPTIONS: SelectOptions[];
-  setOptions: (value: SelectOptions[]) => void;
   options: SelectOptions[];
   setSelectInput: (value: string) => void;
   selectInput: string;
 } & (SingleSelectProps | MultipleSelectProps);
 
 export default function Select({
-  BASE_OPTIONS,
-  setOptions,
   setSelectInput,
   selectInput,
   multiple,
@@ -52,18 +49,16 @@ export default function Select({
 
   function selectOption(option: SelectOptions): void {
     if (multiple) {
-      if (value.includes(option)) {
-        onChange(value.filter((elem) => elem !== option));
-
-        if (
-          BASE_OPTIONS.find(
-            (elem) => elem.lable === option.lable && elem.value === option.value
+      if (
+        value.find(
+          (elem) => option.value === elem.value && option.lable === elem.lable
+        )
+      ) {
+        onChange(
+          value.filter(
+            (elem) => option.value !== elem.value && option.lable !== elem.lable
           )
-        ) {
-          return;
-        }
-
-        setOptions(options.filter((elem) => elem !== option));
+        );
       } else {
         onChange([...value, option]);
       }
@@ -73,7 +68,11 @@ export default function Select({
   }
 
   function isOptionSelected(option: SelectOptions) {
-    return multiple ? value.includes(option) : option === value;
+    return multiple
+      ? value.find(
+          (elem) => option.value === elem.value && option.lable === elem.lable
+        )
+      : option === value;
   }
 
   function handlerKeyPressSelect(e: KeyboardEvent) {
@@ -121,10 +120,9 @@ export default function Select({
       if (e.code === "Space" || e.code === "Enter") {
         const elem: SelectOptions = {
           lable: currentValue,
-          value: currentValue,
+          value: uuidv4(),
         };
         onChange([...value, elem]);
-        setOptions([...options, elem]);
         setSelectInput("");
       }
     }

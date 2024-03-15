@@ -1,0 +1,40 @@
+.noteCard {
+  width: 150px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid rgb(202, 202, 202);
+  border-radius: 0.6em;
+}
+
+.noteCard:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 15px;
+  box-sizing: border-box;
+  padding: 0.5em 0;
+}
+
+.tagsBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.3em;
+}
+
+.tag {
+  background-color: rgb(50, 50, 255);
+  color: white;
+  padding: 4px;
+  box-sizing: border-box;
+  border-radius: 0.5em;
+  font-size: 13px;
+  font-weight: bold;
+}

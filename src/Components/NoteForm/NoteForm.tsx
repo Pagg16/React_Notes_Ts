@@ -1,8 +1,9 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useMemo } from "react";
 import style from "./noteForm.module.css";
 import Select, { SelectOptions } from "../Select/Select";
-import { Link } from "react-router-dom";
-import { NoteData } from "../App/App";
+import { Link, useNavigate } from "react-router-dom";
+import { NoteData, NoteWithTags, Tag } from "../App/App";
+import NoteCard from "../NoteCard/NoteCard";
 
 const BASE_OPTIONS: SelectOptions[] = [
   { lable: "JS", value: "1" },
@@ -14,26 +15,58 @@ const BASE_OPTIONS: SelectOptions[] = [
 ];
 
 type NoteFormProps = {
+  notesWithTags?: NoteWithTags[];
   onSubmit: (data: NoteData) => void;
+  setTags: (data: Tag[]) => void;
+  tags: Tag[];
+  type: "NoteList" | "NewNote";
 };
 
-const NoteForm = ({ onSubmit }: NoteFormProps) => {
-  const [multipleValue, setMultipleValue] = useState<SelectOptions[]>([]);
-  const [options, setOptions] = useState<SelectOptions[]>(BASE_OPTIONS);
+const NoteForm = ({
+  notesWithTags,
+  onSubmit,
+  setTags,
+  tags,
+  type,
+}: NoteFormProps) => {
+  const [selectTags, setSelectTags] = useState<SelectOptions[]>([]);
   const [selectInput, setSelectInput] = useState<string>("");
   const [bodyInput, setBodyInput] = useState<string>("");
   const [titleInput, setTitleInput] = useState<string>("");
+
+  const navigate = useNavigate();
+
+  const options = useMemo(() => {
+    return selectTags
+      .filter(
+        (item) =>
+          !BASE_OPTIONS.find(
+            (elem) => item.value === elem.value && item.lable === elem.lable
+          )
+      )
+      .concat(BASE_OPTIONS);
+  }, [selectTags]);
 
   function handleBodyChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setBodyInput(e.target.value);
   }
 
   function createNote() {
+    const newTags: Tag[] = selectTags
+      .filter(
+        (item) =>
+          !tags.find(
+            (elem) => item.value === elem.value && item.lable === elem.lable
+          )
+      )
+      .concat(tags);
+    setTags(newTags);
     onSubmit({
       title: titleInput,
       markDown: bodyInput,
-      tags: multipleValue,
+      tags: selectTags,
     });
+    navigate("..");
   }
 
   return (
@@ -57,33 +90,48 @@ const NoteForm = ({ onSubmit }: NoteFormProps) => {
             Tags
           </label>
           <Select
-            BASE_OPTIONS={BASE_OPTIONS}
-            setOptions={(elem) => setOptions(elem)}
             setSelectInput={setSelectInput}
             selectInput={selectInput}
             multiple={true}
             options={options}
-            value={multipleValue}
-            onChange={(elem) => setMultipleValue(elem)}
+            value={selectTags}
+            onChange={(elem) => setSelectTags(elem)}
           />
         </div>
       </div>
-      <div className={style.bodyBlock}>
-        <label className={style.bodyLable}>Body</label>
-        <textarea
-          value={bodyInput}
-          onChange={(e) => handleBodyChange(e)}
-          className={style.bodyInput}
-        ></textarea>
+
+      <div
+        className={
+          (style.bodyBlock,
+          `${type === "NoteList" ? style.bodyBlockNoteList : ""}`)
+        }
+      >
+        {type === "NewNote" && (
+          <>
+            <label className={style.bodyLable}>Body</label>
+            <textarea
+              value={bodyInput}
+              onChange={(e) => handleBodyChange(e)}
+              className={style.bodyInput}
+            ></textarea>
+          </>
+        )}
+        {type === "NoteList" &&
+          notesWithTags?.map((elem) => (
+            <NoteCard key={elem.id} title={elem.title} tags={elem.tags} />
+          ))}
       </div>
-      <div className={style.buttonControlBlock}>
-        <button onClick={createNote} className={style.saveBtn}>
-          Save
-        </button>
-        <Link className={style.buttonLink} to="..">
-          <button className={style.canselBtn}>Cancel</button>
-        </Link>
-      </div>
+
+      {type === "NewNote" && (
+        <div className={style.buttonControlBlock}>
+          <button onClick={createNote} className={style.saveBtn}>
+            Save
+          </button>
+          <Link className={style.buttonLink} to="..">
+            <button className={style.canselBtn}>Cancel</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
