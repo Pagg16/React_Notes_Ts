@@ -26,12 +26,14 @@ type SingleSelectProps = {
 };
 
 type SelectionProps = {
+  id: string;
   options: SelectOptions[];
   setSelectInput: (value: string) => void;
   selectInput: string;
 } & (SingleSelectProps | MultipleSelectProps);
 
 export default function Select({
+  id,
   setSelectInput,
   selectInput,
   multiple,
@@ -69,9 +71,7 @@ export default function Select({
 
   function isOptionSelected(option: SelectOptions) {
     return multiple
-      ? value.find(
-          (elem) => option.value === elem.value && option.lable === elem.lable
-        )
+      ? value.find((elem) => option.lable === elem.lable)
       : option === value;
   }
 
@@ -109,22 +109,28 @@ export default function Select({
   }
 
   function handlerKeyPressInput(e: KeyboardEvent) {
+    if (!(e.code === "Space" || e.code === "Enter")) {
+      return;
+    }
+
     const currentValue = selectInput.trim();
+    const currentValueFind = options.find((tag) => tag.lable === currentValue);
 
     if (
       multiple &&
       currentValue &&
-      !value.find((elem) => elem.value === currentValue) &&
+      !value.find(
+        (elem) =>
+          elem.lable === (currentValueFind ? currentValueFind : currentValue)
+      ) &&
       options.length < 31
     ) {
-      if (e.code === "Space" || e.code === "Enter") {
-        const elem: SelectOptions = {
-          lable: currentValue,
-          value: uuidv4(),
-        };
-        onChange([...value, elem]);
-        setSelectInput("");
-      }
+      const elem: SelectOptions = {
+        lable: currentValueFind ? currentValueFind.lable : currentValue,
+        value: currentValueFind ? currentValueFind.value : uuidv4(),
+      };
+      onChange([...value, elem]);
+      setSelectInput("");
     }
   }
 
@@ -161,6 +167,7 @@ export default function Select({
 
         <div className={styles.inputBlock}>
           <input
+            id={id}
             value={selectInput}
             spellCheck={false}
             type="text"
@@ -170,7 +177,7 @@ export default function Select({
             onKeyDown={(e) => handlerKeyPressInput(e)}
             placeholder="enter..."
           />
-          <label className={styles.cursor}></label>
+          {/* <label className={styles.cursor}></label> */}
         </div>
       </span>
       <button

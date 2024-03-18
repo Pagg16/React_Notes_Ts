@@ -4,6 +4,7 @@ import Select, { SelectOptions } from "../Select/Select";
 import { Link, useNavigate } from "react-router-dom";
 import { NoteData, NoteWithTags, Tag } from "../App/App";
 import NoteCard from "../NoteCard/NoteCard";
+import cn from "classnames";
 
 const BASE_OPTIONS: SelectOptions[] = [
   { lable: "JS", value: "1" },
@@ -36,8 +37,21 @@ const NoteForm = ({
 
   const navigate = useNavigate();
 
+  const notesSorted = useMemo(() => {
+    return notesWithTags?.filter((note) => {
+      return (
+        (titleInput === "" ||
+          note.title.toLowerCase().includes(titleInput.toLowerCase())) &&
+        (selectTags.length === 0 ||
+          selectTags.every((tag) =>
+            note.tags.some((noteTag) => noteTag.lable === tag.lable)
+          ))
+      );
+    });
+  }, [notesWithTags, selectTags, titleInput]);
+
   const options = useMemo(() => {
-    return selectTags
+    return tags
       .filter(
         (item) =>
           !BASE_OPTIONS.find(
@@ -86,10 +100,11 @@ const NoteForm = ({
         </div>
 
         <div className={style.inputBlock}>
-          <label className={style.inputLable} htmlFor="inputTitle">
+          <label className={style.inputLable} htmlFor="inputTags">
             Tags
           </label>
           <Select
+            id="inputTags"
             setSelectInput={setSelectInput}
             selectInput={selectInput}
             multiple={true}
@@ -101,10 +116,10 @@ const NoteForm = ({
       </div>
 
       <div
-        className={
-          (style.bodyBlock,
-          `${type === "NoteList" ? style.bodyBlockNoteList : ""}`)
-        }
+        className={cn(
+          style.bodyBlock,
+          `${type === "NoteList" ? style.bodyBlockNoteList : ""}`
+        )}
       >
         {type === "NewNote" && (
           <>
@@ -117,8 +132,13 @@ const NoteForm = ({
           </>
         )}
         {type === "NoteList" &&
-          notesWithTags?.map((elem) => (
-            <NoteCard key={elem.id} title={elem.title} tags={elem.tags} />
+          notesSorted?.map((elem) => (
+            <NoteCard
+              key={elem.id}
+              title={elem.title}
+              tags={elem.tags}
+              id={elem.id}
+            />
           ))}
       </div>
 

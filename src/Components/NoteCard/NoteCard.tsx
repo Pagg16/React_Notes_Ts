@@ -1,14 +1,13 @@
-import { Tag } from "../App/App";
+import { useNavigate } from "react-router-dom";
+import { Note } from "../App/App";
 import styles from "./noteCard.module.css";
 
-type NoteCard = {
-  title: string;
-  tags: Tag[];
-};
+type NoteCard = Omit<Note, "markDown">;
 
-export default function NoteCard({ title, tags }: NoteCard) {
+export default function NoteCard({ title, tags, id }: NoteCard) {
+  const navigate = useNavigate();
   return (
-    <div className={styles.noteCard}>
+    <div onClick={() => navigate(`/${id}`)} className={styles.noteCard}>
       <div className={styles.title}>{title}</div>
       <div className={styles.tagsBlock}>
         {tags.map((tag) => (

@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { v4 as uuidv4 } from "uuid";
 import NoteList from "../NoteList/NoteList";
+import NoteLayout from "../NoteLayout/NoteLayout";
+import Note from "../Note/Note";
 
 export type Note = {
   id: string;
@@ -69,16 +71,19 @@ function App() {
         }
       />
       <Route element={""} />
+
       <Route
         path="/new"
         element={
           <NewNote onSubmit={onCteateNote} setTags={setTags} tags={tags} />
         }
       />
-      <Route path="/id:">
-        <Route index element={""} />
+
+      <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
+        <Route index element={<Note />} />
         <Route path="edit" element={""} />
       </Route>
+
       <Route path="*" element={""} />
     </Routes>
   );

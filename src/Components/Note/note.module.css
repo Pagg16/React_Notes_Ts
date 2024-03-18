@@ -1,0 +1,73 @@
+.note {
+  width: 100%;
+  padding: 5em;
+  box-sizing: border-box;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.tagsBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  max-width: 400px;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+
+.tag {
+  background-color: blue;
+  color: white;
+  padding: 5px;
+  border-radius: 0.5em;
+  font-size: 13px;
+}
+
+.btn {
+  margin: 0;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 0.5em;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: scale(1.1);
+}
+
+.btn:nth-child(1) {
+  background-color: blue;
+  color: white;
+}
+
+.btn:nth-child(2) {
+  color: rgb(255, 114, 114);
+  border-color: rgb(255, 114, 114);
+  margin: 0 10px 0;
+}
+
+.btn:nth-child(3) {
+  color: rgb(160, 160, 160);
+  border-color: rgb(160, 160, 160);
+}
