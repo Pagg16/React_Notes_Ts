@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import NoteList from "../NoteList/NoteList";
 import NoteLayout from "../NoteLayout/NoteLayout";
 import Note from "../Note/Note";
+import EditNote from "../EditNote/EditNote";
 
 export type Note = {
   id: string;
@@ -51,10 +52,49 @@ function App() {
   function onCteateNote({ tags, ...data }: NoteData) {
     setNotes((prevNotes) => {
       return [
-        ...prevNotes,
         { ...data, id: uuidv4(), tagsIds: tags.map((tag) => tag.value) },
+        ...prevNotes,
       ];
     });
+  }
+
+  function onUpdateNote(id: string, { tags, ...data }: NoteData) {
+    setNotes((prevNotes) => {
+      return prevNotes.map((note) => {
+        if (note.id === id) {
+          return { ...note, ...data, tagsIds: tags.map((tag) => tag.value) };
+        }
+        return note;
+      });
+    });
+  }
+
+  function onDeleteNote(id: string) {
+    setNotes((prevNotes) => {
+      return prevNotes.filter((note) => note.id !== id);
+    });
+  }
+
+  function onEditTag(id: string, lable: string) {
+    setTags((prevTags) =>
+      prevTags.map((tag) => {
+        if (tag.value === id) {
+          return { ...tag, lable };
+        }
+        return tag;
+      })
+    );
+  }
+
+
+  function onDeleteTag(id: string) {
+    setTags((prevTags) => prevTags.filter((tag) => tag.value !== id));
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => ({
+        ...note,
+        tagsIds: note.tagsIds.filter((tagId) => tagId !== id),
+      }))
+    );
   }
 
   return (
@@ -63,6 +103,8 @@ function App() {
         path="/"
         element={
           <NoteList
+            onDeleteTag={onDeleteTag}
+            onEditTag={onEditTag}
             onSubmit={onCteateNote}
             setTags={setTags}
             tags={tags}
@@ -80,8 +122,13 @@ function App() {
       />
 
       <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-        <Route index element={<Note />} />
-        <Route path="edit" element={""} />
+        <Route index element={<Note onDeleteNote={onDeleteNote} />} />
+        <Route
+          path="edit"
+          element={
+            <EditNote onSubmit={onUpdateNote} setTags={setTags} tags={tags} />
+          }
+        />
       </Route>
 
       <Route path="*" element={""} />

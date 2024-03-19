@@ -53,12 +53,12 @@ export default function Select({
     if (multiple) {
       if (
         value.find(
-          (elem) => option.value === elem.value && option.lable === elem.lable
+          (elem) => option.lable === elem.lable && option.value === elem.value
         )
       ) {
         onChange(
           value.filter(
-            (elem) => option.value !== elem.value && option.lable !== elem.lable
+            (elem) => option.lable !== elem.lable && option.value !== elem.value
           )
         );
       } else {
@@ -121,7 +121,9 @@ export default function Select({
       currentValue &&
       !value.find(
         (elem) =>
-          elem.lable === (currentValueFind ? currentValueFind : currentValue)
+          elem.lable ===
+            (currentValueFind ? currentValueFind.lable : currentValue) &&
+          elem.value === (currentValueFind && currentValueFind.value)
       ) &&
       options.length < 31
     ) {

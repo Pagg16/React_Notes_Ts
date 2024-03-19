@@ -2,20 +2,14 @@ import { useState, ChangeEvent, useMemo } from "react";
 import style from "./noteForm.module.css";
 import Select, { SelectOptions } from "../Select/Select";
 import { Link, useNavigate } from "react-router-dom";
-import { NoteData, NoteWithTags, Tag } from "../App/App";
+import { Note, NoteData, NoteWithTags, Tag } from "../App/App";
 import NoteCard from "../NoteCard/NoteCard";
 import cn from "classnames";
 
-const BASE_OPTIONS: SelectOptions[] = [
-  { lable: "JS", value: "1" },
-  { lable: "Redux", value: "2 " },
-  { lable: "React", value: "3" },
-  { lable: "typeScript", value: "4" },
-  { lable: "CSS", value: "5" },
-  { lable: "HTML", value: "6" },
-];
+import BASE_TAGS from "../../constants/BASE_TAGS";
 
 type NoteFormProps = {
+  currentNote?: Note;
   notesWithTags?: NoteWithTags[];
   onSubmit: (data: NoteData) => void;
   setTags: (data: Tag[]) => void;
@@ -24,16 +18,23 @@ type NoteFormProps = {
 };
 
 const NoteForm = ({
+  currentNote,
   notesWithTags,
   onSubmit,
   setTags,
   tags,
   type,
 }: NoteFormProps) => {
-  const [selectTags, setSelectTags] = useState<SelectOptions[]>([]);
+  const [selectTags, setSelectTags] = useState<SelectOptions[]>(
+    currentNote ? currentNote.tags : []
+  );
   const [selectInput, setSelectInput] = useState<string>("");
-  const [bodyInput, setBodyInput] = useState<string>("");
-  const [titleInput, setTitleInput] = useState<string>("");
+  const [bodyInput, setBodyInput] = useState<string>(
+    currentNote ? currentNote.markDown : ""
+  );
+  const [titleInput, setTitleInput] = useState<string>(
+    currentNote ? currentNote.title : ""
+  );
 
   const navigate = useNavigate();
 
@@ -54,11 +55,11 @@ const NoteForm = ({
     return tags
       .filter(
         (item) =>
-          !BASE_OPTIONS.find(
+          !BASE_TAGS.find(
             (elem) => item.value === elem.value && item.lable === elem.lable
           )
       )
-      .concat(BASE_OPTIONS);
+      .concat(BASE_TAGS);
   }, [selectTags]);
 
   function handleBodyChange(e: ChangeEvent<HTMLTextAreaElement>) {
@@ -66,6 +67,16 @@ const NoteForm = ({
   }
 
   function createNote() {
+    settingTags();
+    onSubmit({
+      title: titleInput,
+      markDown: bodyInput,
+      tags: selectTags,
+    });
+    navigate("..");
+  }
+
+  function settingTags() {
     const newTags: Tag[] = selectTags
       .filter(
         (item) =>
@@ -75,12 +86,6 @@ const NoteForm = ({
       )
       .concat(tags);
     setTags(newTags);
-    onSubmit({
-      title: titleInput,
-      markDown: bodyInput,
-      tags: selectTags,
-    });
-    navigate("..");
   }
 
   return (
@@ -147,7 +152,7 @@ const NoteForm = ({
           <button onClick={createNote} className={style.saveBtn}>
             Save
           </button>
-          <Link className={style.buttonLink} to="..">
+          <Link className={style.buttonLink} to="/">
             <button className={style.canselBtn}>Cancel</button>
           </Link>
         </div>
