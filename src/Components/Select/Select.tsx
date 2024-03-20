@@ -169,9 +169,10 @@ export default function Select({
 
         <div className={styles.inputBlock}>
           <input
+            autoComplete="off"
+            spellCheck="false"
             id={id}
             value={selectInput}
-            spellCheck={false}
             type="text"
             className={styles.input}
             onClick={(e) => e.stopPropagation()}
@@ -179,7 +180,6 @@ export default function Select({
             onKeyDown={(e) => handlerKeyPressInput(e)}
             placeholder="enter..."
           />
-          {/* <label className={styles.cursor}></label> */}
         </div>
       </span>
       <button

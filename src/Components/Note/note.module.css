@@ -1,7 +1,10 @@
 .note {
   width: 100%;
-  padding: 5em;
-  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .header {
@@ -9,6 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 50px;
 }
 
 .description {
@@ -19,19 +23,60 @@
 
 .title {
   font-weight: bold;
-  font-size: 30px;
+  font-size: 35px;
   margin-bottom: 20px;
+  font-family: "MadimiOne", Arial, sans-serif;
+  font-weight: lighter;
 }
 
 .tagsBlock {
   display: flex;
-  /* align-items: center;
-  justify-content: center; */
   gap: 0.3em;
   max-width: 400px;
   overflow-x: scroll;
   overflow-y: hidden;
   box-sizing: border-box;
+  border: 2px solid gray;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.markDownContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+  flex: 1;
+}
+
+.markDown {
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Скрыть стандартный ползунок прокрутки */
+.tagsBlock::-webkit-scrollbar {
+  height: 10px; /* Ширина полосы прокрутки */
+}
+
+/* Стилизовать полосу прокрутки */
+.tagsBlock::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Цвет фона полосы прокрутки */
+  border-radius: 10px; /* Радиус скругления */
+  margin: 8px;
+}
+
+/* Стилизовать ползунок прокрутки */
+.tagsBlock::-webkit-scrollbar-thumb {
+  background-color: #555; /* Цвет ползунка */
+  border-radius: 10px; /* Радиус скругления */
+}
+
+/* Изменить цвет при наведении на ползунок прокрутки */
+.tagsBlock::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
 }
 
 .tag {
@@ -70,4 +115,31 @@
 .btn:nth-child(3) {
   color: rgb(160, 160, 160);
   border-color: rgb(160, 160, 160);
+}
+
+.controlBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 930px) {
+  .controlBar {
+    flex-direction: column-reverse;
+    gap: 10px;
+    margin: 20px auto 0;
+  }
+  .btn:nth-child(2) {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .tagsBlock {
+    max-width: 200px;
+  }
+
+  .tagsBlock::-webkit-scrollbar {
+    height: 20px;
+  }
 }

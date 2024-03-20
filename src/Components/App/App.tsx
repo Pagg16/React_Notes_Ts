@@ -62,6 +62,7 @@ function App() {
     setNotes((prevNotes) => {
       return prevNotes.map((note) => {
         if (note.id === id) {
+          removeLinkedLists(note.id, note.tagsIds, tags);
           return { ...note, ...data, tagsIds: tags.map((tag) => tag.value) };
         }
         return note;
@@ -75,6 +76,24 @@ function App() {
     });
   }
 
+  function removeLinkedLists(
+    noteId: string,
+    noteTagsIds: string[],
+    tags: Tag[]
+  ) {
+    const removeIdTags = noteTagsIds.filter((id) =>
+      tags.find((tag) => tag.value !== id)
+    );
+
+    const isLinked = notes.filter((note) =>
+      note.tagsIds.find(
+        (id) => noteId !== id && removeIdTags.find((tag) => tag === id)
+      )
+    );
+
+    console.log(isLinked);
+  }
+
   function onEditTag(id: string, lable: string) {
     setTags((prevTags) =>
       prevTags.map((tag) => {
@@ -85,7 +104,6 @@ function App() {
       })
     );
   }
-
 
   function onDeleteTag(id: string) {
     setTags((prevTags) => prevTags.filter((tag) => tag.value !== id));
@@ -112,7 +130,6 @@ function App() {
           />
         }
       />
-      <Route element={""} />
 
       <Route
         path="/new"

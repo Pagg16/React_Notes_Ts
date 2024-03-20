@@ -21,16 +21,18 @@ export default function Note({ onDeleteNote }: NoteProps) {
         <div className={styles.description}>
           <div className={styles.title}>{title}</div>
 
-          <div className={styles.tagsBlock}>
-            {tags.map((tag) => (
-              <div className={styles.tag} key={tag.value}>
-                {tag.lable}
-              </div>
-            ))}
-          </div>
+          {tags.length > 0 && (
+            <div className={styles.tagsBlock}>
+              {tags.map((tag) => (
+                <div className={styles.tag} key={tag.value}>
+                  {tag.lable}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className={styles.controlNar}>
+        <div className={styles.controlBar}>
           <button onClick={() => navigate("edit")} className={styles.btn}>
             Edit
           </button>
@@ -42,8 +44,8 @@ export default function Note({ onDeleteNote }: NoteProps) {
           </button>
         </div>
       </div>
-      <div>
-        <Markdown>{markDown}</Markdown>
+      <div className={styles.markDownContainer}>
+        <Markdown className={styles.markDown}>{markDown}</Markdown>
       </div>
       {isDeletePopup && (
         <DelitePopup

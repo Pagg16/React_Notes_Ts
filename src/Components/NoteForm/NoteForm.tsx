@@ -60,7 +60,7 @@ const NoteForm = ({
           )
       )
       .concat(BASE_TAGS);
-  }, [selectTags]);
+  }, [selectTags, tags]);
 
   function handleBodyChange(e: ChangeEvent<HTMLTextAreaElement>) {
     setBodyInput(e.target.value);
@@ -90,7 +90,7 @@ const NoteForm = ({
 
   return (
     <div className={style.noteForm}>
-      <div className={style.inputsBlock}>
+      <div className={style.inputsBlocks}>
         <div className={style.inputBlock}>
           <label className={style.inputLable} htmlFor="inputTitle">
             Title

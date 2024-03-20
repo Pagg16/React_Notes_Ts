@@ -1,6 +1,5 @@
 .container {
   position: relative;
-  width: 20em;
   min-height: 1.5em;
   border: 0.05em solid #777;
   display: flex;
@@ -9,6 +8,7 @@
   padding: 0.2em;
   border-radius: 0.25em;
   outline: none;
+  width: 245px;
 }
 
 .container:focus {

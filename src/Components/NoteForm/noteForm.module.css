@@ -7,7 +7,7 @@
   height: 100%;
 }
 
-.inputsBlock {
+.inputsBlocks {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -116,4 +116,18 @@
 .buttonLink {
   text-decoration: none;
   color: #666;
+}
+
+@media screen and (max-width: 700px) {
+  .inputsBlocks {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .inputBlock {
+    flex-direction: row;
+    align-items: center;
+  }
+  .inputLable {
+    margin-right: 5px;
+  }
 }

@@ -60,40 +60,42 @@ export default function NoteList({
         tags={tags}
       />
       {isOpenPopup && (
-        <div onClick={(e) => e.stopPropagation()} className={styles.popup}>
-          <div className={styles.tags}>
-            {tags?.map((tag) => (
-              <div className={styles.tag} key={tag.value}>
-                {isBaseTag(tag.value) ? (
-                  <div className={styles.tagName}>{tag.lable}</div>
-                ) : (
-                  <input
-                    className={styles.input}
-                    onChange={(e) => onEditTag(tag.value, e.target.value)}
-                    value={tag.lable}
-                  />
-                )}
+        <div className={styles.popupBlock}>
+          <div onClick={(e) => e.stopPropagation()} className={styles.popup}>
+            <div className={styles.tags}>
+              {tags?.map((tag) => (
+                <div className={styles.tag} key={tag.value}>
+                  {isBaseTag(tag.value) ? (
+                    <div className={styles.tagName}>{tag.lable}</div>
+                  ) : (
+                    <input
+                      className={styles.input}
+                      onChange={(e) => onEditTag(tag.value, e.target.value)}
+                      value={tag.lable}
+                    />
+                  )}
 
-                {!isBaseTag(tag.value) && (
-                  <button
-                    onClick={() => {
-                      setTagId(tag.value);
-                      setIsDeletePopup(true);
-                    }}
-                    className={styles.delete}
-                  >
-                    x
-                  </button>
-                )}
-              </div>
-            ))}
+                  {!isBaseTag(tag.value) && (
+                    <button
+                      onClick={() => {
+                        setTagId(tag.value);
+                        setIsDeletePopup(true);
+                      }}
+                      className={styles.delete}
+                    >
+                      x
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setIsOpenPopup(false)}
+              className={cn(styles.btn, styles.btnBack)}
+            >
+              Back
+            </button>
           </div>
-          <button
-            onClick={() => setIsOpenPopup(false)}
-            className={cn(styles.btn, styles.btnBack)}
-          >
-            Back
-          </button>
         </div>
       )}
       {isDeletePopup && (

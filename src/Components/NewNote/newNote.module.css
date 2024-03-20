@@ -5,13 +5,13 @@
   box-sizing: border-box;
   max-width: 1000px;
   margin: 0 auto 0;
-  padding: 5em;
   height: 100%;
 }
 
 .title {
   color: black;
-  font-size: 30px;
-  font-weight: bold;
+  font-weight: lighter;
   margin: 10px 0 10px;
+  font-size: 30px;
+  font-family: "MadimiOne", Arial, sans-serif;
 }

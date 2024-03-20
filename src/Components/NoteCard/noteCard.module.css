@@ -11,22 +11,34 @@
   position: relative;
 }
 
+@media screen and (min-width: 1529px) {
+  .noteCard {
+    width: 300px;
+    height: 200px;
+  }
+}
+
 .noteCard:hover {
   transform: scale(1.1);
   cursor: pointer;
+  z-index: 10;
 }
 
 .title {
-  font-weight: bold;
-  font-size: 15px;
+  font-family: "MadimiOne", Arial, sans-serif;
+  font-weight: lighter;
+  font-size: 25px;
   box-sizing: border-box;
   padding: 0.5em 0;
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tagsBlock {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: nowrap;
   gap: 0.3em;
   width: 95%;
