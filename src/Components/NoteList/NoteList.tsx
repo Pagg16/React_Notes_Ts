@@ -2,7 +2,7 @@ import { NoteData, NoteWithTags, Tag } from "../App/App";
 import styles from "./noteList.module.css";
 import NoteForm from "../NoteForm/NoteForm";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import cn from "classnames";
 import DelitePopup from "../Popup/DelitePopup";
 
@@ -32,6 +32,13 @@ export default function NoteList({
   function isBaseTag(id: string) {
     return BASE_TAGS.find((tagId) => tagId.value === id);
   }
+
+  const filterBasicTags = useMemo(() => {
+    return tags.filter(
+      ({ value }) =>
+        !BASE_TAGS.find(({ value: baseTagId }) => baseTagId === value)
+    );
+  }, [tags]);
 
   return (
     <div onClick={() => setIsOpenPopup(false)} className={styles.noteList}>
@@ -63,7 +70,7 @@ export default function NoteList({
         <div className={styles.popupBlock}>
           <div onClick={(e) => e.stopPropagation()} className={styles.popup}>
             <div className={styles.tags}>
-              {tags?.map((tag) => (
+              {filterBasicTags.concat(BASE_TAGS).map((tag) => (
                 <div className={styles.tag} key={tag.value}>
                   {isBaseTag(tag.value) ? (
                     <div className={styles.tagName}>{tag.lable}</div>
@@ -89,6 +96,9 @@ export default function NoteList({
                 </div>
               ))}
             </div>
+            {filterBasicTags.length === 0 && (
+              <div className={styles.onlyBase}>Only basic tags</div>
+            )}
             <button
               onClick={() => setIsOpenPopup(false)}
               className={cn(styles.btn, styles.btnBack)}

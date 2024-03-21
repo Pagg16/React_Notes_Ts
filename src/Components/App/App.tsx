@@ -81,17 +81,34 @@ function App() {
     noteTagsIds: string[],
     tags: Tag[]
   ) {
-    const removeIdTags = noteTagsIds.filter((id) =>
-      tags.find((tag) => tag.value !== id)
+    const removeIdTags = noteTagsIds.filter(
+      (id) => !tags.find((tag) => tag.value === id)
     );
 
-    const isLinked = notes.filter((note) =>
-      note.tagsIds.find(
-        (id) => noteId !== id && removeIdTags.find((tag) => tag === id)
-      )
+    if (removeIdTags.length === 0) return;
+
+    const isLinked = notes.filter(
+      (note) =>
+        noteId !== note.id &&
+        note.tagsIds.find((id) => removeIdTags.find((tag) => tag === id))
     );
 
-    console.log(isLinked);
+    if (isLinked.length > 0) return;
+
+    setTags((prevTags) =>
+      prevTags.filter((tag) => !removeIdTags.includes(tag.value))
+    );
+
+    setNotes((prevNotes) =>
+      prevNotes.map((note) => {
+        return {
+          ...note,
+          tagsIds: note.tagsIds.filter(
+            (tagId) => !removeIdTags.includes(tagId)
+          ),
+        };
+      })
+    );
   }
 
   function onEditTag(id: string, lable: string) {

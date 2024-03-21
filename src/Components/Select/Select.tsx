@@ -105,7 +105,7 @@ export default function Select({
   }
 
   function handleChangeInput(e: ChangeEvent<HTMLInputElement>) {
-    setSelectInput(e.target.value);
+    setSelectInput(e.target.value.trim());
   }
 
   function handlerKeyPressInput(e: KeyboardEvent) {
@@ -113,8 +113,15 @@ export default function Select({
       return;
     }
 
-    const currentValue = selectInput.trim();
-    const currentValueFind = options.find((tag) => tag.lable === currentValue);
+    onAddTagInput(selectInput);
+  }
+
+  function onAddTagInput(currentValue: string) {
+    if (selectInput === "") return;
+
+    const currentValueFind = options.find(
+      (tag) => tag.lable.toLowerCase() === currentValue.toLowerCase()
+    );
 
     if (
       multiple &&
@@ -122,7 +129,7 @@ export default function Select({
       !value.find(
         (elem) =>
           elem.lable ===
-            (currentValueFind ? currentValueFind.lable : currentValue) &&
+            (currentValueFind ? currentValueFind.lable : currentValue) ||
           elem.value === (currentValueFind && currentValueFind.value)
       ) &&
       options.length < 31
@@ -144,6 +151,7 @@ export default function Select({
     <div
       onKeyDown={(e: KeyboardEvent) => handlerKeyPressSelect(e)}
       onBlur={() => {
+        onAddTagInput(selectInput);
         setIsOpen(false);
       }}
       onClick={() => setIsOpen((state) => !state)}

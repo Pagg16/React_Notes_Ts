@@ -150,6 +150,12 @@
   padding-left: 5px;
 }
 
+.onlyBase {
+  font-size: 20px;
+  font-style: "Arial";
+  margin: auto auto;
+}
+
 @media screen and (max-width: 760px) {
   .header {
     flex-direction: column;

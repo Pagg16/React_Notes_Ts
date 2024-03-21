@@ -48,6 +48,12 @@
   align-items: start;
   width: 100%;
   flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 2px solid gray;
+  box-sizing: border-box;
+  padding: 6px;
+  border-radius: 10px;
 }
 
 .markDown {
@@ -84,7 +90,7 @@
   color: white;
   padding: 5px;
   border-radius: 0.5em;
-  font-size: 13px;
+  font-size: 18px;
 }
 
 .btn {
@@ -132,6 +138,9 @@
   .btn:nth-child(2) {
     margin: 0;
   }
+  .header {
+    margin-bottom: 30px;
+  }
 }
 
 @media screen and (max-width: 560px) {
@@ -141,5 +150,9 @@
 
   .tagsBlock::-webkit-scrollbar {
     height: 20px;
+  }
+
+  .header {
+    margin-bottom: 10px;
   }
 }
